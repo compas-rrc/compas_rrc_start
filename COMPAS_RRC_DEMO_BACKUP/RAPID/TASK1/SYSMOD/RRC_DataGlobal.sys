@@ -1,0 +1,147 @@
+MODULE RRC_DataGlobal(SYSMODULE)
+    !***********************************************************************************
+    !
+    ! ETH Zurich / Robotic Fabrication Lab
+    ! HIB C13 / Stefano-Franscini-Platz 1
+    ! CH-8093 Zurich
+    !
+    !***********************************************************************************
+    !
+    ! PROJECT     :  RRC - Rapid Robot Communication
+    !
+    ! FUNCTION    :  Inclouds all project spezific global datas 
+    !
+    ! AUTHOR      :  Philippe Fleischmann
+    !
+    ! EMAIL       :  rrc@arch.ethz.ch
+    !
+    ! HISTORY     :  2019.02.22
+    !
+    ! Copyright   :  ETH Zurich (CH) 2019
+    !                - Philippe Fleischmann
+    !                - Michael Lyrenmann
+    !                - Gonzalo Casas
+    !
+    ! License     :  This code base is governed by an EULA (End-User License Agreement)
+    !                which you have received together with the software.
+    !                You are not allowed to use the software on a real robots
+    !                without a signed EULA.
+    !
+    !                A copy of the EULA content is in the controller task (T_CTRL).
+    !
+    !***********************************************************************************
+
+    !************************************************
+    ! Declaration :     bool
+    !************************************************
+    !
+    PERS bool b_RRC_TaskReceiverOn;
+    PERS bool b_RRC_TaskSenderOn;
+    !
+    PERS bool b_RRC_MaWaitForJob;
+    PERS bool b_RRC_MaHamModOn;
+    PERS bool b_RRC_MaInUse;
+    PERS bool b_RRC_AutoIPAddress;
+    PERS bool b_RRC_VirtualCustomPorts;
+    !
+    ! Channels
+    PERS bool b_RRC_Com{n_RRC_NumOfCha};
+    PERS bool b_RRC_SIDCheck{n_RRC_NumOfCha};
+    PERS bool b_RRC_SIDErrorStop{n_RRC_NumOfCha};
+    PERS bool b_RRC_LogPro{n_RRC_NumOfCha};
+    !
+    ! Client information
+    PERS bool b_RRC_PPMain;
+    !
+    ! Activate or deactivate a event log message 
+    PERS bool b_RRC_EvLogReadAndUnpackTime;
+    PERS bool b_RRC_EvLogPackAndSendTime;
+    PERS bool b_RRC_EvLogMsgInUntilMsgOutTime;
+    !
+    ! Temporary to measure the feedback loop
+    PERS bool b_RRC_FeedbackOut;
+
+    !************************************************
+    ! Declaration :     num
+    !************************************************
+    !
+    PERS num n_RRC_WritePtrSenBufMa{n_RRC_NumOfCha};
+    PERS num n_RRC_WritePtrSenBufRob{n_RRC_NumOfCha};
+    PERS num n_RRC_SIDMax;
+    !
+    PERS num n_RRC_R1_ChaNr;
+    PERS num n_RRC_R2_ChaNr;
+    PERS num n_RRC_R3_ChaNr;
+    PERS num n_RRC_R4_ChaNr;
+    !
+    PERS num n_RRC_SocketPortRec{n_RRC_NumOfCha};
+    PERS num n_RRC_SocketPortSen{n_RRC_NumOfCha};
+    !
+    PERS num n_RRC_TimeTaskLiAll;
+    PERS num n_RRC_TimeTPMsg;
+    !
+    PERS num n_RRC_ProtocolVersion;
+
+    !************************************************
+    ! Declaration :     string
+    !************************************************
+    !
+    PERS string n_RRC_Version;
+    !
+    PERS string st_RRC_CurMaJob;
+    PERS string st_RRC_JobForMa;
+    !
+    PERS string st_RRC_IP_Address;
+    PERS string st_RRC_IP_AddressVC;
+    PERS string st_RRC_IP_AddressMan;
+    !
+    ! System data 
+    PERS string st_RRC_SerialNr;
+    PERS string st_RRC_SoftwareVersion;
+    PERS string st_RRC_RobotWare;
+    PERS string st_RRC_ControllerID;
+    PERS string st_RRC_WAN_IP;
+    PERS string st_RRC_ControllerLang;
+    PERS string st_RRC_SystemName;
+
+    !************************************************
+    ! Declaration :     tasklist
+    !************************************************
+    !
+    !PERS tasks tl_RRC_All{5};
+    PERS tasks tl_RRC_All{7};
+
+    !************************************************
+    ! Declaration :     syncident
+    !************************************************
+    !
+    VAR syncident id_RRC_MainSta;
+    VAR syncident id_RRC_MainEnd;
+    !
+    VAR syncident id_RRC_InitSta;
+    VAR syncident id_RRC_InitMa;
+    VAR syncident id_RRC_InitEnd;
+
+    !************************************************
+    ! Declaration :     RRC_channel
+    !************************************************
+    !
+    PERS RRC_channel ch_RRC_Channels;
+
+    !************************************************
+    ! Declaration :     buffer_msg
+    !************************************************
+    !
+    ! Receiver buffer for master
+    PERS RRC_buffer_msg bm_RRC_RecBufferMa{n_RRC_NumOfCha,10};
+    !
+    ! Receiver buffer for robots
+    PERS RRC_buffer_msg bm_RRC_RecBufferRob{n_RRC_NumOfCha,10};
+    !
+    ! Sender buffer for master
+    PERS RRC_buffer_msg bm_RRC_SenBufferMa{n_RRC_NumOfCha,10};
+    !
+    ! Sender buffer for robots
+    PERS RRC_buffer_msg bm_RRC_SenBufferRob{n_RRC_NumOfCha,10};
+
+ENDMODULE

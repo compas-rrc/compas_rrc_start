@@ -1,0 +1,510 @@
+MODULE RRC_Control_Ctrl(SYSMODULE)
+    !***********************************************************************************
+    !
+    ! ETH Zurich / Robotic Fabrication Lab
+    ! HIB C 13 / Stefano-Franscini-Platz 1
+    ! CH-8093 Zurich
+    !
+    !***********************************************************************************
+    !
+    ! PROJECT     :  RRC - Rapid Robot Communication
+    !
+    ! FUNCTION    :  Control modul for the project 
+    !
+    ! AUTHOR      :  Philippe Fleischmann
+    !
+    ! EMAIL       :  rrc@arch.ethz.ch
+    !
+    ! HISTORY     :  2019.02.22
+    !
+    ! Copyright   :  ETH Zurich (CH) 2019
+    !                - Philippe Fleischmann
+    !                - Michael Lyrenmann
+    !                - Gonzalo Casas
+    !
+    ! License     :  This code base is governed by an EULA (End-User License Agreement)
+    !                which you have received together with the software.
+    !                You are not allowed to use the software on a real robots
+    !                without a signed EULA.
+    !
+    !                A copy of the EULA content is in the controller task (T_CTRL).
+    !
+    !***********************************************************************************
+
+    !************************************************
+    ! Function    :     main
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC main()
+        !****************************!
+        !                            !
+        !   #####   #####    ####    !
+        !   #    #  #    #  #    #   !
+        !   #    #  #    #  #        !
+        !   #####   #####   #        !
+        !   #   #   #   #   #    #   !
+        !   #    #  #    #   ####    !
+        !                            !
+        !****************************!
+        !
+        r_RRC_Main;
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Main for Project RRC
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_Main()
+        !
+        ! Configure communication
+        %"r_"+st_RRC_CurMaJob+"_RRC_Config"%;
+        !
+        ! Clear Display
+        TPErase;
+        !
+        ! Task synchronisation 
+        WaitSyncTask id_RRC_MainSta,tl_RRC_All;
+        !
+        ! Message for Operator
+        TPWrite "RRC Main";
+        !
+        ! Init Project
+        r_RRC_InitCell;
+        !
+        ! Production loop
+        WHILE b_RRC_Run=TRUE DO
+            !
+            ! Check for single and cycle job 
+            IF b_RRC_Com{n_RRC_R1_ChaNr} r_RRC_CheckMaJob n_RRC_R1_ChaNr;
+            !
+            ! Check for single and cycle job 
+            IF b_RRC_Com{n_RRC_R2_ChaNr} r_RRC_CheckMaJob n_RRC_R2_ChaNr;
+            !
+            ! Check for single and cycle job 
+            IF b_RRC_Com{n_RRC_R3_ChaNr} r_RRC_CheckMaJob n_RRC_R3_ChaNr;
+            !
+            ! Check for single and cycle job 
+            IF b_RRC_Com{n_RRC_R4_ChaNr} r_RRC_CheckMaJob n_RRC_R4_ChaNr;
+        ENDWHILE
+        !
+        ! Message for Operator
+        TPWrite "RRC End";
+        !
+        ! Task synchronisation 
+        WaitSyncTask id_RRC_MainEnd,tl_RRC_All;
+        !
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Initialize Cell
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_InitCell()
+        !
+        ! Initialize Global Variables
+        r_RRC_InitGlobalVar;
+        !
+        ! Task synchronisation 
+        WaitSyncTask id_RRC_InitSta,tl_RRC_All;
+        !
+        ! Read system data
+        r_RRC_ReadSysData;
+        !
+        ! Initialize IP Address
+        r_RRC_InitIP;
+        !
+        ! Initialize Ports
+        r_RRC_InitPorts;
+        !
+        ! Initialize Variables
+        r_RRC_InitVar;
+        !
+        ! Task synchronisation master data done 
+        WaitSyncTask id_RRC_InitMa,tl_RRC_All;
+        !
+        ! Task synchronisation 
+        WaitSyncTask id_RRC_InitEnd,tl_RRC_All;
+        !
+        ! Check rrc connection and bring user message 
+        IF b_RRC_TaskReceiverOn=TRUE AND b_RRC_TaskSenderOn=TRUE THEN
+            !
+            ! User Message
+            r_RRC_TPMsg " RRC-Connected ";
+        ELSEIF b_RRC_TaskReceiverOn=TRUE AND b_RRC_TaskSenderOn=FALSE THEN
+            !
+            ! User Message
+            r_RRC_TPMsg " RRC - Only receiver connected";
+
+        ELSEIF b_RRC_TaskReceiverOn=FALSE AND b_RRC_TaskSenderOn=TRUE THEN
+            !
+            ! User Message
+            r_RRC_TPMsg " RRC - Only sender connected";
+        ELSE
+            !
+            ! User Message
+            r_RRC_TPMsg " RRC - Not connected";
+        ENDIF
+        RETURN ;
+    ERROR
+        !
+        ! Check error code
+        TPWrite ""\Num:=ERRNO;
+        TRYNEXT;
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Initialize global variables
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_InitGlobalVar()
+        !
+        ! Reset task variables 
+        b_RRC_TaskReceiverOn:=FALSE;
+        b_RRC_TaskSenderOn:=FALSE;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Initialize Variables
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_InitVar()
+        !
+        ! Reset flag cycle job 
+        b_RRC_CyclicJob{n_RRC_R1_ChaNr}:=FALSE;
+        b_RRC_CyclicJob{n_RRC_R2_ChaNr}:=FALSE;
+        b_RRC_CyclicJob{n_RRC_R3_ChaNr}:=FALSE;
+        b_RRC_CyclicJob{n_RRC_R4_ChaNr}:=FALSE;
+        !
+        ! Reset flag cycle time running
+        b_RRC_CycleTimeRunnig{n_RRC_R1_ChaNr}:=FALSE;
+        b_RRC_CycleTimeRunnig{n_RRC_R2_ChaNr}:=FALSE;
+        b_RRC_CycleTimeRunnig{n_RRC_R3_ChaNr}:=FALSE;
+        b_RRC_CycleTimeRunnig{n_RRC_R4_ChaNr}:=FALSE;
+        !
+        ! Reset Read pointer 
+        n_RRC_ReadPtrRecBuf{n_RRC_R1_ChaNr}:=1;
+        n_RRC_ReadPtrRecBuf{n_RRC_R2_ChaNr}:=1;
+        n_RRC_ReadPtrRecBuf{n_RRC_R3_ChaNr}:=1;
+        n_RRC_ReadPtrRecBuf{n_RRC_R4_ChaNr}:=1;
+        !
+        ! Reset Counter Feedback Value
+        n_RRC_CounterFStr{n_RRC_R1_ChaNr}:=0;
+        n_RRC_CounterFStr{n_RRC_R2_ChaNr}:=0;
+        n_RRC_CounterFStr{n_RRC_R3_ChaNr}:=0;
+        n_RRC_CounterFStr{n_RRC_R4_ChaNr}:=0;
+        !
+        ! Reset Counter Feedback Value
+        n_RRC_CounterFVal{n_RRC_R1_ChaNr}:=0;
+        n_RRC_CounterFVal{n_RRC_R2_ChaNr}:=0;
+        n_RRC_CounterFVal{n_RRC_R3_ChaNr}:=0;
+        n_RRC_CounterFVal{n_RRC_R4_ChaNr}:=0;
+        !
+        ! Clear actual sending message
+        bm_RRC_ActSenMsgMa{n_RRC_R1_ChaNr}:=bm_RRC_Empty;
+        bm_RRC_ActSenMsgMa{n_RRC_R2_ChaNr}:=bm_RRC_Empty;
+        bm_RRC_ActSenMsgMa{n_RRC_R3_ChaNr}:=bm_RRC_Empty;
+        bm_RRC_ActSenMsgMa{n_RRC_R4_ChaNr}:=bm_RRC_Empty;
+        !
+        ! Placeholder
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Initialize IP Addresse 
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_InitIP()
+        !
+        ! Check for automatic or manual IP Address
+        IF b_RRC_AutoIPAddress=TRUE THEN
+            !
+            ! Automatic IP Address
+            !
+            ! Check for real or virtual controller 
+            IF RobOS()=TRUE THEN
+                !
+                ! Real controller
+                !
+                ! Read current IP Address
+                st_RRC_IP_Address:=GetSysInfo(\LanIp);
+            ELSE
+                !
+                ! Virtual controller
+                !
+                ! Set virtual IP Addresse 
+                st_RRC_IP_Address:=st_RRC_IP_AddressVC;
+            ENDIF
+        ELSE
+            !
+            ! Manual IP Address
+            !
+            ! Set manual IP Address
+            st_RRC_IP_Address:=st_RRC_IP_AddressMan;
+        ENDIF
+        !
+        ! Writ event log message for RobotStudio Output
+        r_RRC_EvLogMsg st_RRC_EvLogMsgHeader,"Actual IP Address: "+st_RRC_IP_Address;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Initialize Ports 
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_InitPorts()
+        !
+        ! Default ports 
+        n_RRC_SocketPortRec:=n_RRC_DefaultSocketPortRec;
+        n_RRC_SocketPortSen:=n_RRC_DefaultSocketPortSen;
+        !
+        ! Check for virtual custom ports
+        IF RobOS()=FALSE AND b_RRC_VirtualCustomPorts=TRUE THEN
+            !
+            ! Set virtual custom ports
+            n_RRC_SocketPortRec:=n_RRC_ViCustomSocketPortRec;
+            n_RRC_SocketPortSen:=n_RRC_ViCustomSocketPortSen;
+        ENDIF
+        !
+        ! Writ event log message for RobotStudio Output
+        r_RRC_EvLogMsg st_RRC_EvLogMsgHeader,"Actual receiver ports: ["+NumToStr(n_RRC_SocketPortRec{1},0)+"; "+NumToStr(n_RRC_SocketPortRec{2},0)+"; "+NumToStr(n_RRC_SocketPortRec{3},0)+"; "+NumToStr(n_RRC_SocketPortRec{4},0)+"]";
+        r_RRC_EvLogMsg st_RRC_EvLogMsgHeader,"Actual sender ports: ["+NumToStr(n_RRC_SocketPortSen{1},0)+"; "+NumToStr(n_RRC_SocketPortSen{2},0)+"; "+NumToStr(n_RRC_SocketPortSen{3},0)+"; "+NumToStr(n_RRC_SocketPortSen{4},0)+"]";
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Read System Data 
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_ReadSysData()
+        ! 
+        ! Serial  number
+        st_RRC_SerialNr:=GetSysInfo(\SerialNo);
+        !
+        ! Software version
+        st_RRC_SoftwareVersion:=GetSysInfo(\SWVersion);
+        !
+        ! Software version name 
+        st_RRC_RobotWare:=GetSysInfo(\SWVersionName);
+        !
+        ! Controller ID
+        st_RRC_ControllerID:=GetSysInfo(\CtrlId);
+        !
+        ! WAN IP address
+        st_RRC_WAN_IP:=GetSysInfo(\LanIp);
+        !
+        ! Controller language 
+        st_RRC_ControllerLang:=GetSysInfo(\CtrlLang);
+        !
+        ! Active system 
+        st_RRC_SystemName:=GetSysInfo(\SystemName);
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Check for master job
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_CheckMaJob(num nChaNr)
+        !
+        ! Write current channel number for the instructions 
+        n_RRC_ChaNr:=nChaNr;
+        !
+        ! Write current channel task name for the instructions 
+        TEST n_RRC_ChaNr
+        CASE 1:
+            !
+            ! Set actual channel name 
+            st_RRC_ChaTask:=ch_RRC_Channels.Ch_1.T_Name;
+        CASE 2:
+            !
+            ! Set actual channel name 
+            st_RRC_ChaTask:=ch_RRC_Channels.Ch_2.T_Name;
+        CASE 3:
+            !
+            ! Set actual channel name 
+            st_RRC_ChaTask:=ch_RRC_Channels.Ch_3.T_Name;
+        CASE 4:
+            !
+            ! Set actual channel name 
+            st_RRC_ChaTask:=ch_RRC_Channels.Ch_4.T_Name;
+        DEFAULT:
+        ENDTEST
+        !
+        ! Check for job in receiver buffer
+        IF bm_RRC_RecBufferMa{n_RRC_ChaNr,n_RRC_ReadPtrRecBuf{n_RRC_ChaNr}}.startbit=TRUE THEN
+            !
+            ! Execute job from receiver buffer
+            r_RRC_ExeJobFrmRecBuf;
+            !
+        ENDIF
+        !
+        ! Check cyclic job 
+        IF b_RRC_CyclicJob{n_RRC_ChaNr}=TRUE THEN
+            !
+            ! Check cycle time 
+            IF f_RRC_CyTiExpired()=TRUE THEN
+                !
+                ! Call cycle job 
+                %st_RRC_CyclicJob{n_RRC_ChaNr}%;
+            ENDIF
+        ENDIF
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Execute job from reveicer buffer
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_ExeJobFrmRecBuf()
+        !
+        ! Call instruction 
+        %bm_RRC_RecBufferMa{n_RRC_ChaNr,n_RRC_ReadPtrRecBuf{n_RRC_ChaNr}}.Data.Instr %;
+        !
+        ! Set job done
+        bm_RRC_RecBufferMa{n_RRC_ChaNr,n_RRC_ReadPtrRecBuf{n_RRC_ChaNr}}.startbit:=FALSE;
+        !
+        ! Count read pointer
+        IF n_RRC_ReadPtrRecBuf{n_RRC_ChaNr}<DIM(bm_RRC_RecBufferMa,2) THEN
+            !
+            ! Increas write pointer form buffer
+            Incr n_RRC_ReadPtrRecBuf{n_RRC_ChaNr};
+        ELSE
+            !
+            ! Restart with one
+            n_RRC_ReadPtrRecBuf{n_RRC_ChaNr}:=1;
+        ENDIF
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Move message to send buffer master
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_MovMsgToSenBufMa(num nChaNr)
+        !
+        ! Count buffer pointer
+        IF n_RRC_WritePtrSenBufMa{nChaNr}<DIM(bm_RRC_SenBufferMa,2) THEN
+            !
+            ! Increas write pointer form buffer
+            Incr n_RRC_WritePtrSenBufMa{nChaNr};
+        ELSE
+            !
+            ! Restart with one
+            n_RRC_WritePtrSenBufMa{nChaNr}:=1;
+        ENDIF
+        !
+        ! Check for bufferline free to write 
+        IF NOT bm_RRC_SenBufferMa{nChaNr,n_RRC_WritePtrSenBufMa{nChaNr}}.startbit=FALSE THEN
+            !
+            ! Wait for bufferline free to write 
+            WaitUntil bm_RRC_SenBufferMa{nChaNr,n_RRC_WritePtrSenBufMa{nChaNr}}.startbit=FALSE\PollRate:=0.004\Visualize\Header:="RRC MovMsgToSenBufMa"\Message:="Buffer full"\Icon:=iconInfo;
+        ENDIF
+        !
+        ! Write data in buffer
+        bm_RRC_SenBufferMa{nChaNr,n_RRC_WritePtrSenBufMa{nChaNr}}.Data:=bm_RRC_ActSenMsgMa{nChaNr}.Data;
+        !
+        ! Set Startbit
+        bm_RRC_SenBufferMa{nChaNr,n_RRC_WritePtrSenBufMa{nChaNr}}.startbit:=TRUE;
+        !
+        ! Clear actual sending message
+        bm_RRC_ActSenMsgMa{nChaNr}:=bm_RRC_Empty;
+        !
+        ! Reset Counter Feedback String and Value
+        n_RRC_CounterFStr{nChaNr}:=0;
+        n_RRC_CounterFVal{nChaNr}:=0;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Cycle time expired 
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    FUNC bool f_RRC_CyTiExpired()
+        !
+        ! Read current cycle time
+        n_RRC_ActCycleTime{n_RRC_ChaNr}:=ClkRead(ck_RRC_CycleJob{n_RRC_ChaNr});
+        !
+        ! Check cycle time expired
+        IF n_RRC_ActCycleTime{n_RRC_ChaNr}>n_RRC_MinCycleTime{n_RRC_ChaNr} THEN
+            !
+            ! Store last cycle time 
+            n_RRC_LastCycleTime{n_RRC_ChaNr}:=n_RRC_ActCycleTime{n_RRC_ChaNr};
+            !
+            ! Reset clock
+            ClkReset ck_RRC_CycleJob{n_RRC_ChaNr};
+            ClkStart ck_RRC_CycleJob{n_RRC_ChaNr};
+            !
+            ! Cycle time expired
+            RETURN TRUE;
+        ELSE
+            !
+            ! Cycle time not expired
+            RETURN FALSE;
+        ENDIF
+    ERROR
+        ! Placeholder for Error Code...
+    ENDFUNC
+
+
+    !************************************************
+    ! Function    :     ProgError
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_ProgError()
+        ! 
+        ! User Info
+        TPWrite "Program Error";
+        !
+        ! Stop Program
+        Stop;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+ENDMODULE

@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Comments: Settings for the FlexPendant.-->
+<FP>
+  <USER name="">
+    <DATA id="ViewInManFull">
+      <PROP name="text" value="PARAM_TXT_VIEWINMANFULL" />
+      <PROP name="dll" value="" />
+      <PROP name="type" value="" />
+    </DATA>
+    <DATA id="ViewInAuto">
+      <PROP name="text" value="PARAM_TXT_VIEWINAUTO" />
+      <PROP name="dll" value="TpsViewProductionWnd.dll" />
+      <PROP name="type" value="ABB.Robotics.Tps.Production.TpsViewProductionWnd" />
+    </DATA>
+    <DATA id="IO View">
+      <PROP name="Configurations file" value="C:/Users/fleischp/Documents/RobotStudio/Solutions/Compas_RRC_Course_2/Virtual Controllers/vIRB4600-40-255_RRC/INTERNAL/FPConfigurations.xml" />
+      <PROP name="Signal view layout" value="Default" />
+    </DATA>
+    <DATA id="Display">
+      <PROP name="BackgroundImage" value="(HOME$)/RRC/compas_rrc_fp_background_version_1.gif" />
+    </DATA>
+    <DATA id="UASViewLevel">
+      <PROP name="text" value="PARAM_TXT_UASVIEWLEVEL" />
+      <PROP name="level" value="Msg" />
+      <PROP name="type" value="" />
+    </DATA>
+    <DATA id="DefaultPath">
+      <PROP name="BackupRestore" value="" />
+    </DATA>
+    <DATA id="QuickSet">
+      <PROP name="IncrementToggle" value="Small" />
+    </DATA>
+    <DATA id="Programmable Key_2">
+      <PROP name="type" value="Output" />
+      <PROP name="allowInAuto" value="Yes" />
+      <PROP name="pressed" value="PressRelease" />
+      <PROP name="target" value="doMaFP2" />
+    </DATA>
+    <DATA id="ViewInManual">
+      <PROP name="text" value="PARAM_TXT_VIEWINMANUAL" />
+      <PROP name="dll" value="" />
+      <PROP name="type" value="" />
+    </DATA>
+    <DATA id="Program Editor">
+      <PROP name="HideDeclarations" value="False" />
+    </DATA>
+    <DATA id="Show">
+      <PROP name="default" value="CtrlName" />
+    </DATA>
+    <DATA id="Programmable Key_3">
+      <PROP name="type" value="Output" />
+      <PROP name="allowInAuto" value="Yes" />
+      <PROP name="pressed" value="SetTo1" />
+      <PROP name="target" value="doMaFP3" />
+    </DATA>
+    <DATA id="AdditionalTestView">
+      <PROP name="TestView" value="" />
+    </DATA>
+    <DATA id="IO Filter">
+      <PROP name="IOFilterLimit" value="100" />
+      <PROP name="IO Name filter" value="" />
+      <PROP name="IOUnit Name Filter" value="" />
+      <PROP name="IOBus Name Filter" value="" />
+      <PROP name="IO Category filter" value="" />
+      <PROP name="IOFilterValue" value="100" />
+      <PROP name="Digital Input Filter" value="" />
+      <PROP name="Digital Output Filter" value="" />
+      <PROP name="Analog Input Filter" value="" />
+      <PROP name="Analog Output Filter" value="" />
+      <PROP name="Group Input Filter" value="" />
+      <PROP name="Group Output Filter" value="" />
+      <PROP name="Most Common Filter" value="" />
+      <PROP name="Safety Signal Filter" value="" />
+      <PROP name="Alias IO Filter" value="" />
+      <PROP name="Simulated IO FIlter" value="" />
+    </DATA>
+    <DATA id="Programmable Key_1">
+      <PROP name="type" value="Output" />
+      <PROP name="allowInAuto" value="Yes" />
+      <PROP name="pressed" value="Toggle" />
+      <PROP name="target" value="doMaFP1" />
+    </DATA>
+    <DATA id="Programmable Key_4">
+      <PROP name="type" value="Output" />
+      <PROP name="allowInAuto" value="Yes" />
+      <PROP name="pressed" value="PressRelease" />
+      <PROP name="target" value="doMaFP4" />
+    </DATA>
+    <DATA id="UserSettings">
+      <PROP name="RapidEditorFontIndex" value="5" />
+    </DATA>
+  </USER>
+</FP>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SystemProperties>
+  <SystemName>vIRB4600-40-255_RRC</SystemName>
+  <SerialNo>VIRTUAL_USE</SerialNo>
+  <UsedMedia>
+    <Media path="C:\Users\fleischp\AppData\Local\ABB\RobotWare\RobotWare_6.11.2019" name="RobotWare" version="6.11.2019">
+    </Media>
+  </UsedMedia>
+  <ControlModule>
+    <Option descr="RobotWare Base">
+    </Option>
+    <Option descr="English">
+    </Option>
+    <Option descr="888-2 PROFINET Controller/Device">
+    </Option>
+    <Option descr="687-1 Advanced Robot Motion">
+    </Option>
+    <Option descr="608-1 World Zones">
+    </Option>
+    <Option descr="610-1 Independent Axis">
+    </Option>
+    <Option descr="611-1 Path Recovery">
+    </Option>
+    <Option descr="612-1 Path Offset">
+    </Option>
+    <Option descr="885-1 SoftMove">
+    </Option>
+    <Option descr="613-1 Collision Detection">
+    </Option>
+    <Option descr="614-1 FTP SFTP and NFS client">
+    </Option>
+    <Option descr="616-1 PC Interface">
+    </Option>
+    <Option descr="617-1 FlexPendant Interface">
+    </Option>
+    <Option descr="688-1 RobotStudio App Connect">
+    </Option>
+    <Option descr="623-1 Multitasking">
+    </Option>
+    <Option descr="689-1 Externally Guided Motion (EGM)">
+    </Option>
+    <Option descr="UDPUC Driver">
+    </Option>
+  </ControlModule>
+  <DriveModule>
+    <Name>Robot1</Name>
+    <Option descr="Drive System IRB 460/640/660/760/4600/66xx/6700">
+    </Option>
+    <Option descr="ADU-790A in position X3">
+    </Option>
+    <Option descr="ADU-790A in position Y3">
+    </Option>
+    <Option descr="ADU-790A in position Z3">
+    </Option>
+    <Option descr="Axis Calibration">
+    </Option>
+    <Option descr="IRB 4600-40/2.55 Type C">
+    </Option>
+  </DriveModule>
+</SystemProperties>

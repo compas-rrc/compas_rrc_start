@@ -1,0 +1,362 @@
+MODULE RRC_Base_Feedback_Rob(SYSMODULE)
+    !***********************************************************************************
+    !
+    ! ETH Zurich / Robotic Fabrication Lab
+    ! HIB C 13 / Stefano-Franscini-Platz 1
+    ! CH-8093 Zurich
+    !
+    !***********************************************************************************
+    !
+    ! PROJECT     :  RRC - Rapid Robot Communication
+    !
+    ! FUNCTION    :  Base Feedback Library  
+    !
+    ! AUTHOR      :  Philippe Fleischmann
+    !
+    ! EMAIL       :  rrc@arch.ethz.ch
+    !
+    ! HISTORY     :  2019.02.22
+    !
+    ! Copyright   :  ETH Zurich (CH) 2019
+    !                - Philippe Fleischmann
+    !                - Michael Lyrenmann
+    !                - Gonzalo Casas
+    !
+    ! License     :  This code base is governed by an EULA (End-User License Agreement)
+    !                which you have received together with the software.
+    !                You are not allowed to use the software on a real robots
+    !                without a signed EULA.
+    !
+    !                A copy of the EULA content is in the controller task (T_CTRL).
+    !
+    !***********************************************************************************
+
+    !************************************************
+    ! Function    :     Feedback add string 
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_FAddString(string stString)
+        !
+        ! Increase feedback string counter 
+        Incr n_RRC_CounterFStr;
+        !
+        ! Select string to add
+        TEST n_RRC_CounterFStr
+        CASE 1:
+            !
+            ! Add string
+            bm_RRC_ActSenMsgRob.Data.St1:=stString;
+        CASE 2:
+            !
+            ! Add string
+            bm_RRC_ActSenMsgRob.Data.St2:=stString;
+        CASE 3:
+            !
+            ! Add string
+            bm_RRC_ActSenMsgRob.Data.St3:=stString;
+        CASE 4:
+            !
+            ! Add string
+            bm_RRC_ActSenMsgRob.Data.St4:=stString;
+        CASE 5:
+            !
+            ! Add string
+            bm_RRC_ActSenMsgRob.Data.St5:=stString;
+        DEFAULT:
+            !
+            ! Program error
+            r_RRC_ProgError;
+        ENDTEST
+        !
+        ! Update string counter
+        bm_RRC_ActSenMsgRob.Data.St_Cnt:=n_RRC_CounterFStr;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Feedback add value
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_FAddValue(num nValue)
+        !
+        ! Increase feedback value counter 
+        Incr n_RRC_CounterFVal;
+        !
+        ! Select value to add
+        TEST n_RRC_CounterFVal
+        CASE 1:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V1:=nValue;
+        CASE 2:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V2:=nValue;
+        CASE 3:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V3:=nValue;
+        CASE 4:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V4:=nValue;
+        CASE 5:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V5:=nValue;
+        CASE 6:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V6:=nValue;
+        CASE 7:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V7:=nValue;
+        CASE 8:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V8:=nValue;
+        CASE 9:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V9:=nValue;
+        CASE 10:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V10:=nValue;
+        CASE 11:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V11:=nValue;
+        CASE 12:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V12:=nValue;
+        CASE 13:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V13:=nValue;
+        CASE 14:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V14:=nValue;
+        CASE 15:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V15:=nValue;
+        CASE 16:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V16:=nValue;
+        CASE 17:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V17:=nValue;
+        CASE 18:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V18:=nValue;
+        CASE 19:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V19:=nValue;
+        CASE 20:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V20:=nValue;
+        CASE 21:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V21:=nValue;
+        CASE 22:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V22:=nValue;
+        CASE 23:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V23:=nValue;
+        CASE 24:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V24:=nValue;
+        CASE 25:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V25:=nValue;
+        CASE 26:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V26:=nValue;
+        CASE 27:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V27:=nValue;
+        CASE 28:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V28:=nValue;
+        CASE 29:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V29:=nValue;
+        CASE 30:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgRob.Data.V30:=nValue;
+        DEFAULT:
+            !
+            ! Program error
+            r_RRC_ProgError;
+        ENDTEST
+        !
+        ! Update value counter
+        bm_RRC_ActSenMsgRob.Data.V_Cnt:=n_RRC_CounterFVal;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Feedback done
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_FDone()
+        !
+        ! Add Sqz_ID from Client in Feedback ID
+        bm_RRC_ActSenMsgRob.Data.F_ID:=bm_RRC_RecBufferRob{n_RRC_ChaNr,n_RRC_ReadPtrRecBuf}.Data.S_ID;
+        !
+        ! Instruction 
+        bm_RRC_ActSenMsgRob.Data.Instr:=bm_RRC_RecBufferRob{n_RRC_ChaNr,n_RRC_ReadPtrRecBuf}.Data.Instr;
+        !
+        ! Feedback 
+        bm_RRC_ActSenMsgRob.Data.Feedb:="Done";
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Feedback Position
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_FPos(num nFL)
+        !
+        ! Check feedback level
+        TEST nFL
+        CASE 10001:
+            !
+            ! add robot position after robot is in position  
+            r_RRC_FActRobT;
+        CASE 10002:
+            !
+            ! add fly by robot positon 
+            r_RRC_FActRobT\FlyBy;
+        CASE 10003:
+            !
+            ! add robot joints after robot is in position  
+            r_RRC_FActJointT;
+        CASE 10004:
+            !
+            ! add fly by joints positon 
+            r_RRC_FActJointT\FlyBy;
+        ENDTEST
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Feedback actual jointtarget
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_FActJointT(\switch FlyBy)
+        !
+        ! Read actual jointtartet
+        r_RRC_ReadActJointT\FlyBy?FlyBy;
+        !
+        ! Read robot axis
+        r_RRC_FAddValue jp_RRC_Act.robax.rax_1;
+        r_RRC_FAddValue jp_RRC_Act.robax.rax_2;
+        r_RRC_FAddValue jp_RRC_Act.robax.rax_3;
+        r_RRC_FAddValue jp_RRC_Act.robax.rax_4;
+        r_RRC_FAddValue jp_RRC_Act.robax.rax_5;
+        r_RRC_FAddValue jp_RRC_Act.robax.rax_6;
+        !
+        ! Read external axis
+        r_RRC_FAddValue jp_RRC_Act.extax.eax_a;
+        r_RRC_FAddValue jp_RRC_Act.extax.eax_b;
+        r_RRC_FAddValue jp_RRC_Act.extax.eax_c;
+        !
+        ! Reserve for unused external axis
+        r_RRC_FAddValue jp_RRC_Act.extax.eax_d;
+        r_RRC_FAddValue jp_RRC_Act.extax.eax_e;
+        r_RRC_FAddValue jp_RRC_Act.extax.eax_f;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Feedback actual robtarget
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_FActRobT(\switch FlyBy)
+        !
+        ! Read actual robtarget
+        r_RRC_ReadActRobT\FlyBy?FlyBy;
+        !
+        ! Read actual translation 
+        r_RRC_FAddValue p_RRC_Act.trans.x;
+        r_RRC_FAddValue p_RRC_Act.trans.y;
+        r_RRC_FAddValue p_RRC_Act.trans.z;
+        !
+        ! Read actual rotation (Quaternions) 
+        r_RRC_FAddValue p_RRC_Act.rot.q1;
+        r_RRC_FAddValue p_RRC_Act.rot.q2;
+        r_RRC_FAddValue p_RRC_Act.rot.q3;
+        r_RRC_FAddValue p_RRC_Act.rot.q4;
+        !
+        ! Read actual external axis
+        r_RRC_FAddValue p_RRC_Act.extax.eax_a;
+        r_RRC_FAddValue p_RRC_Act.extax.eax_b;
+        r_RRC_FAddValue p_RRC_Act.extax.eax_c;
+        !
+        ! Reserve for unused external axis
+        r_RRC_FAddValue p_RRC_Act.extax.eax_d;
+        r_RRC_FAddValue p_RRC_Act.extax.eax_e;
+        r_RRC_FAddValue p_RRC_Act.extax.eax_f;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Feedback error 
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_FError()
+        !
+        ! Feedback error with feedback code
+        bm_RRC_ActSenMsgRob.Data.Feedb:="Done FError "+NumToStr(bm_RRC_RecBufferRob{n_RRC_ChaNr,n_RRC_ReadPtrRecBuf}.Data.F_Lev,0);
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+ENDMODULE

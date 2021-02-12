@@ -1,0 +1,282 @@
+MODULE RRC_Base_Feedback_Ctrl(SYSMODULE)
+    !***********************************************************************************
+    !
+    ! ETH Zurich / Robotic Fabrication Lab
+    ! HIB C 13 / Stefano-Franscini-Platz 1
+    ! CH-8093 Zurich
+    !
+    !***********************************************************************************
+    !
+    ! PROJECT     :  RRC - Rapid Robot Communication
+    !
+    ! FUNCTION    :  Base Feedback Library  
+    !
+    ! AUTHOR      :  Philippe Fleischmann
+    !
+    ! EMAIL       :  rrc@arch.ethz.ch
+    !
+    ! HISTORY     :  2019.02.22
+    !
+    ! Copyright   :  ETH Zurich (CH) 2019
+    !                - Philippe Fleischmann
+    !                - Michael Lyrenmann
+    !                - Gonzalo Casas
+    !
+    ! License     :  This code base is governed by an EULA (End-User License Agreement)
+    !                which you have received together with the software.
+    !                You are not allowed to use the software on a real robots
+    !                without a signed EULA.
+    !
+    !                A copy of the EULA content is in the controller task (T_CTRL).
+    !
+    !***********************************************************************************
+
+    !************************************************
+    ! Function    :     Feedback add string 
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_FAddString(string stString)
+        !
+        ! Increase feedback string counter 
+        Incr n_RRC_CounterFStr{n_RRC_ChaNr};
+        !
+        ! Select string to add
+        TEST n_RRC_CounterFStr{n_RRC_ChaNr}
+        CASE 1:
+            !
+            ! Add string
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.St1:=stString;
+        CASE 2:
+            !
+            ! Add string
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.St2:=stString;
+        CASE 3:
+            !
+            ! Add string
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.St3:=stString;
+        CASE 4:
+            !
+            ! Add string
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.St4:=stString;
+        CASE 5:
+            !
+            ! Add string
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.St5:=stString;
+        DEFAULT:
+            !
+            ! Program error
+            r_RRC_ProgError;
+        ENDTEST
+        !
+        ! Update string counter
+        bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.St_Cnt:=n_RRC_CounterFStr{n_RRC_ChaNr};
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Feedback add value
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_FAddValue(num nValue)
+        !
+        ! Increase feedback value counter 
+        Incr n_RRC_CounterFVal{n_RRC_ChaNr};
+        !
+        ! Select value to add
+        TEST n_RRC_CounterFVal{n_RRC_ChaNr}
+        CASE 1:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V1:=nValue;
+        CASE 2:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V2:=nValue;
+        CASE 3:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V3:=nValue;
+        CASE 4:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V4:=nValue;
+        CASE 5:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V5:=nValue;
+        CASE 6:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V6:=nValue;
+        CASE 7:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V7:=nValue;
+        CASE 8:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V8:=nValue;
+        CASE 9:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V9:=nValue;
+        CASE 10:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V10:=nValue;
+        CASE 11:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V11:=nValue;
+        CASE 12:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V12:=nValue;
+        CASE 13:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V13:=nValue;
+        CASE 14:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V14:=nValue;
+        CASE 15:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V15:=nValue;
+        CASE 16:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V16:=nValue;
+        CASE 17:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V17:=nValue;
+        CASE 18:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V18:=nValue;
+        CASE 19:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V19:=nValue;
+        CASE 20:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V20:=nValue;
+        CASE 21:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V21:=nValue;
+        CASE 22:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V22:=nValue;
+        CASE 23:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V23:=nValue;
+        CASE 24:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V24:=nValue;
+        CASE 25:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V25:=nValue;
+        CASE 26:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V26:=nValue;
+        CASE 27:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V27:=nValue;
+        CASE 28:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V28:=nValue;
+        CASE 29:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V29:=nValue;
+        CASE 30:
+            !
+            ! Add value
+            bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V30:=nValue;
+        DEFAULT:
+            !
+            ! Program error
+            r_RRC_ProgError;
+        ENDTEST
+        !
+        ! Update value counter
+        bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.V_Cnt:=n_RRC_CounterFVal{n_RRC_ChaNr};
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Feedback done
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_FDone()
+        !
+        ! Add Sqz_ID from Client in Feedback ID
+        bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.F_ID:=bm_RRC_RecBufferMa{n_RRC_ChaNr,n_RRC_ReadPtrRecBuf{n_RRC_ChaNr}}.Data.S_ID;
+        !
+        ! Instruction 
+        bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.Instr:=bm_RRC_RecBufferMa{n_RRC_ChaNr,n_RRC_ReadPtrRecBuf{n_RRC_ChaNr}}.Data.Instr;
+        !
+        ! Feedback 
+        bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.Feedb:="Master Done";
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Cycle Feedback done
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_CyFDone()
+        !
+        ! Add cyclic jop Sqz_ID from cyclic job start instruction 
+        bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.F_ID:=n_RRC_CyJobStart_S_ID{n_RRC_ChaNr};
+        !
+        ! Add cyclic jop instruction
+        bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.Instr:=st_RRC_CyclicJob{n_RRC_ChaNr};
+        !
+        ! Feedback 
+        bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.Feedb:="Master Done";
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Feedback error 
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_FError()
+        !
+        ! Feedback error with feedback code
+        bm_RRC_ActSenMsgMa{n_RRC_ChaNr}.Data.Feedb:="Master Done FError "+NumToStr(bm_RRC_RecBufferMa{n_RRC_ChaNr,n_RRC_ReadPtrRecBuf{n_RRC_ChaNr}}.Data.F_Lev,0);
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+ENDMODULE

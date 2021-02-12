@@ -1,0 +1,72 @@
+MODULE RRC_DataTask_Rob(SYSMODULE)
+    !***********************************************************************************
+    !
+    ! ETH Zurich / Robotic Fabrication Lab
+    ! HIB C 13 / Stefano-Franscini-Platz 1
+    ! CH-8093 Zurich
+    !
+    !***********************************************************************************
+    !
+    ! PROJECT     :  RRC - Rapid Robot Communication
+    !
+    ! FUNCTION    :  Includ all Task specific Data's
+    !
+    ! AUTHOR      :  Philippe Fleischmann
+    !
+    ! EMAIL       :  rrc@arch.ethz.ch
+    !
+    ! HISTORY     :  2019.02.22
+    !
+    ! Copyright   :  ETH Zurich (CH) 2019
+    !                - Philippe Fleischmann
+    !                - Michael Lyrenmann
+    !                - Gonzalo Casas
+    !
+    ! License     :  This code base is governed by an EULA (End-User License Agreement)
+    !                which you have received together with the software.
+    !                You are not allowed to use the software on a real robots
+    !                without a signed EULA.
+    !
+    !                A copy of the EULA content is in the controller task (T_CTRL).
+    !
+    !***********************************************************************************
+
+    !************************************************
+    ! Declaration :     bool
+    !************************************************
+    !
+    CONST bool b_RRC_Run:=TRUE;
+
+    !************************************************
+    ! Declaration :     num
+    !************************************************
+    !
+    CONST num n_RRC_PulRatWaiJobRec:=0.01;
+    !
+    TASK PERS num n_RRC_ReadPtrRecBuf:=1;
+    !
+    CONST num n_RRC_NumOfCha:=4;
+    TASK PERS num n_RRC_ChaNr:=1;
+    !
+    TASK PERS num n_RRC_AccRamp:=33;
+    !
+    TASK PERS num n_RRC_CounterFStr:=0;
+    TASK PERS num n_RRC_CounterFVal:=0;
+
+    !************************************************
+    ! Declaration :     string
+    !************************************************
+    !
+    TASK PERS string st_RRC_Taskname:="T_ROB1";
+
+    !************************************************
+    ! Declaration :     RRC_buffer_msg
+    !************************************************
+    !
+    CONST RRC_buffer_msg bm_RRC_Empty:=[[0,0,0,"",0,0,"",0,0,0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],FALSE];
+    !
+    TASK PERS RRC_buffer_msg bm_RRC_ActSenMsgRob:=[[0,0,0,"",0,0,"",0,0,0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],FALSE];
+
+
+
+ENDMODULE

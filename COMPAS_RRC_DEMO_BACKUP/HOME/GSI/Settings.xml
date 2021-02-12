@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+	<Servers>
+	</Servers>
+	<Clients>
+		<Client Convention="CDP" Name="RsMaster" Path="GSI/RsMaster/" />
+	</Clients>
+</Settings>

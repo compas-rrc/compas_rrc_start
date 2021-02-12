@@ -1,0 +1,106 @@
+MODULE RRC_DataTask_Ctrl(SYSMODULE)
+    !***********************************************************************************
+    !
+    ! ETH Zurich / Robotic Fabrication Lab
+    ! HIB C 13 / Stefano-Franscini-Platz 1
+    ! CH-8093 Zurich
+    !
+    !***********************************************************************************
+    !
+    ! PROJECT     :  RRC - Rapid Robot Communication
+    !
+    ! FUNCTION    :  Includ all Task specific Data's
+    !
+    ! AUTHOR      :  Philippe Fleischmann
+    !
+    ! EMAIL       :  rrc@arch.ethz.ch
+    !
+    ! HISTORY     :  2019.02.22
+    !
+    ! Copyright   :  ETH Zurich (CH) 2019
+    !                - Philippe Fleischmann
+    !                - Michael Lyrenmann
+    !                - Gonzalo Casas
+    !
+    ! License     :  This code base is governed by an EULA (End-User License Agreement)
+    !                which you have received together with the software.
+    !                You are not allowed to use the software on a real robots
+    !                without a signed EULA.
+    !
+    !                A copy of the EULA content is in the controller task (T_CTRL).
+    !
+    !***********************************************************************************
+
+    !************************************************
+    ! Declaration :     bool
+    !************************************************
+    !
+    CONST bool b_RRC_Run:=TRUE;
+    !
+    TASK PERS bool b_RRC_CyclicJob{n_RRC_NumOfCha}:=[FALSE,FALSE,FALSE,FALSE];
+    TASK PERS bool b_RRC_CycleTimeRunnig{n_RRC_NumOfCha}:=[FALSE,FALSE,FALSE,FALSE];
+
+    !************************************************
+    ! Declaration :     num
+    !************************************************
+    !
+    CONST num n_RRC_NumOfCha:=4;
+    !
+    CONST num n_RRC_DefaultSocketPortRec{n_RRC_NumOfCha}:=[30101,30102,30103,30104];
+    CONST num n_RRC_DefaultSocketPortSen{n_RRC_NumOfCha}:=[30201,30202,30203,30204];
+    !
+    TASK PERS num n_RRC_ViCustomSocketPortRec{n_RRC_NumOfCha}:=[31101,31102,31103,31104];
+    TASK PERS num n_RRC_ViCustomSocketPortSen{n_RRC_NumOfCha}:=[31201,31202,31203,31204];
+    !
+    TASK PERS num n_RRC_ChaNr:=1;
+    TASK PERS num n_RRC_ReadPtrRecBuf{n_RRC_NumOfCha}:=[1,1,1,1];
+    TASK PERS num n_RRC_Act_S_ID:=1;
+    TASK PERS num n_RRC_CounterFStr{n_RRC_NumOfCha}:=[0,0,0,0];
+    TASK PERS num n_RRC_CounterFVal{n_RRC_NumOfCha}:=[0,0,0,0];
+    TASK PERS num n_RRC_CyJobStart_S_ID{n_RRC_NumOfCha}:=[1,0,0,0];
+    TASK PERS num n_RRC_MinCycleTime{n_RRC_NumOfCha}:=[1,1,1,1];
+    TASK PERS num n_RRC_ActCycleTime{n_RRC_NumOfCha}:=[0.364,1,1,1];
+    TASK PERS num n_RRC_LastCycleTime{n_RRC_NumOfCha}:=[1.001,1,1,1];
+    TASK PERS num n_RRC_ActCycle{n_RRC_NumOfCha}:=[55.002,1,1,1];
+
+    !************************************************
+    ! Declaration :     string
+    !************************************************
+    !
+    TASK PERS string st_RRC_ChaTask:="T_ROB1";
+    TASK PERS string st_RRC_EvLogMsgHeader:="RRC -- Master";
+    !
+    TASK PERS string st_RRC_CyclicJob{n_RRC_NumOfCha}:=["r_RRC_GetJointT","","",""];
+    TASK PERS string st_RRC_TPWrite{n_RRC_NumOfCha}:=["E-Level Channel 1 Master","E-Level Channel 2 Master","",""];
+
+    !************************************************
+    ! Declaration :     jointtarget
+    !************************************************
+    !  
+    TASK PERS jointtarget jp_RRC_Act:=[[0,0,0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+
+    !************************************************
+    ! Declaration :     robtarget
+    !************************************************
+    !  
+    TASK PERS robtarget p_RRC_Act:=[[10270.7,5902.7,955.503],[0.33371,0.672327,0.217398,-0.623981],[1,1,-1,1],[8000,-4200,-2500,0,0,0]];
+
+    !************************************************
+    ! Declaration :     string
+    !************************************************
+    !
+    VAR clock ck_RRC_CycleJob{n_RRC_NumOfCha};
+
+    !************************************************
+    ! Declaration :     RRC_buffer_msg
+    !************************************************
+    !
+    CONST RRC_buffer_msg bm_RRC_Empty:=[[0,0,0,"",0,0,"",0,0,0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],FALSE];
+    !
+    TASK PERS RRC_buffer_msg bm_RRC_ActSenMsgMa{n_RRC_NumOfCha}:=[
+    [[0,0,0,"",0,0,"",0,0,0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],FALSE],
+    [[0,0,0,"",0,0,"",0,0,0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],FALSE],
+    [[0,0,0,"",0,0,"",0,0,0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],FALSE],
+    [[0,0,0,"",0,0,"",0,0,0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,"",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],FALSE]];
+
+ENDMODULE

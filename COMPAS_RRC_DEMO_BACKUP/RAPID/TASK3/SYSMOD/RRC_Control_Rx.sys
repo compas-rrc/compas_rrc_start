@@ -1,0 +1,242 @@
+MODULE RRC_Control_Rx(SYSMODULE)
+    !***********************************************************************************
+    !
+    ! ETH Zurich / Robotic Fabrication Lab
+    ! HIB C 13 / Stefano-Franscini-Platz 1
+    ! CH-8093 Zurich
+    !
+    !***********************************************************************************
+    !
+    ! PROJECT     :  RRC - Rapid Robot Communication
+    !
+    ! FUNCTION    :  Control modul for the project 
+    !
+    ! AUTHOR      :  Philippe Fleischmann
+    !
+    ! EMAIL       :  rrc@arch.ethz.ch
+    !
+    ! HISTORY     :  2019.02.22
+    !
+    ! Copyright   :  ETH Zurich (CH) 2019
+    !                - Philippe Fleischmann
+    !                - Michael Lyrenmann
+    !                - Gonzalo Casas
+    !
+    ! License     :  This code base is governed by an EULA (End-User License Agreement)
+    !                which you have received together with the software.
+    !                You are not allowed to use the software on a real robots
+    !                without a signed EULA.
+    !
+    !                A copy of the EULA content is in the controller task (T_CTRL).
+    !
+    !***********************************************************************************
+
+    !************************************************
+    ! Function    :     main
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC main()
+        !****************************!
+        !                            !
+        !   #####   #####    ####    !
+        !   #    #  #    #  #    #   !
+        !   #    #  #    #  #        !
+        !   #####   #####   #        !
+        !   #   #   #   #   #    #   !
+        !   #    #  #    #   ####    !
+        !                            !
+        !****************************!
+        !
+        r_RRC_Main;
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Main for Project RRC
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_Main()
+        !
+        ! Wait until master has set taskliste all
+        WaitTime n_RRC_TimeTaskLiAll;
+        !
+        ! Task synchronisation 
+        WaitSyncTask id_RRC_MainSta,tl_RRC_All;
+        !
+        ! Message for Operator
+        TPWrite "RRC Main";
+        !
+        ! Initialize cell
+        r_RRC_InitCell;
+        !
+        ! Work process
+        WHILE b_RRC_Run=TRUE DO
+            !
+            ! Check and receive data from client 1
+            IF b_RRC_Com{n_RRC_R1_ChaNr}=TRUE r_RRC_CheckAndRecFrmClient n_RRC_R1_ChaNr;
+            !
+            ! Check and receive data from client 2
+            IF b_RRC_Com{n_RRC_R2_ChaNr}=TRUE r_RRC_CheckAndRecFrmClient n_RRC_R2_ChaNr;
+            !
+            ! Check and receive data from client 3
+            IF b_RRC_Com{n_RRC_R3_ChaNr}=TRUE r_RRC_CheckAndRecFrmClient n_RRC_R3_ChaNr;
+            !
+            ! Check and receive data from client 4
+            IF b_RRC_Com{n_RRC_R4_ChaNr}=TRUE r_RRC_CheckAndRecFrmClient n_RRC_R4_ChaNr;
+            !
+            ! Check cycle time stop watch activ 
+            IF b_RRC_EvLogMsgInUntilMsgOutTime=TRUE THEN
+                !
+                ! Measure cycle time
+                IF b_RRC_FeedbackOut=TRUE THEN
+                    !
+                    ! Reset variable
+                    b_RRC_FeedbackOut:=FALSE;
+                    !
+                    ! Stop read message input to feedback done watch
+                    ClkStop clk_RRC_MsgInUntilMsgOut;
+                    !
+                    ! Log current read and unpack time in RobotStudio output
+                    r_RRC_EvLogMsg st_RRC_EvLogMsgHeader,"Msg in until Msg out time : "+NumToStr(ClkRead(clk_RRC_MsgInUntilMsgOut\HighRes),3);
+                ENDIF
+            ENDIF
+        ENDWHILE
+        !
+        ! Message for Operator
+        TPWrite "RRC End";
+        !
+        ! Task synchronisation 
+        WaitSyncTask id_RRC_MainEnd,tl_RRC_All;
+        !
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Initialize Cell
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_InitCell()
+        !
+        ! Task synchronisation 
+        WaitSyncTask id_RRC_InitSta,tl_RRC_All;
+        !
+        ! Task synchronisation wait for master data 
+        WaitSyncTask id_RRC_InitMa,tl_RRC_All;
+        !
+        ! Initialize variables
+        r_RRC_InitVar;
+        !
+        ! Initalize protocol log
+        !* r_RRC_LogProtInit;
+        !
+        ! Initialize sockets
+        IF b_RRC_SocketActiv=TRUE r_RRC_InitSockets;
+        !
+        ! Task synchronisation 
+        WaitSyncTask id_RRC_InitEnd,tl_RRC_All;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Initialize Variables
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_InitVar()
+        !
+        ! Set Task on
+        b_RRC_TaskReceiverOn:=TRUE;
+        !
+        ! Reset buffer full bits master
+        b_RRC_BufFullMa{n_RRC_R1_ChaNr}:=FALSE;
+        b_RRC_BufFullMa{n_RRC_R2_ChaNr}:=FALSE;
+        b_RRC_BufFullMa{n_RRC_R3_ChaNr}:=FALSE;
+        b_RRC_BufFullMa{n_RRC_R4_ChaNr}:=FALSE;
+        !
+        ! Reset buffer full bits robot
+        b_RRC_BufFullRob{n_RRC_R1_ChaNr}:=FALSE;
+        b_RRC_BufFullRob{n_RRC_R2_ChaNr}:=FALSE;
+        b_RRC_BufFullRob{n_RRC_R3_ChaNr}:=FALSE;
+        b_RRC_BufFullRob{n_RRC_R4_ChaNr}:=FALSE;
+        !
+        ! Set first cycle bools 
+        b_RRC_FirstProtocolAfterPPMain:=TRUE;
+        !
+        ! Temp to measure cycle time
+        b_RRC_FeedbackOut:=FALSE;
+
+
+        !
+        ! Reset Counters master
+        n_RRC_WritePtrBufMa{n_RRC_R1_ChaNr}:=0;
+        n_RRC_WritePtrBufMa{n_RRC_R2_ChaNr}:=0;
+        n_RRC_WritePtrBufMa{n_RRC_R3_ChaNr}:=0;
+        n_RRC_WritePtrBufMa{n_RRC_R4_ChaNr}:=0;
+        !
+        ! Reset Counters robot 
+        n_RRC_WritePtrBufRob{n_RRC_R1_ChaNr}:=0;
+        n_RRC_WritePtrBufRob{n_RRC_R2_ChaNr}:=0;
+        n_RRC_WritePtrBufRob{n_RRC_R3_ChaNr}:=0;
+        n_RRC_WritePtrBufRob{n_RRC_R4_ChaNr}:=0;
+        !
+        ! Clear Buffer master
+        FOR i FROM 1 TO DIM(bm_RRC_RecBufferMa,2) DO
+            !
+            ! Overwrite with an empty message
+            bm_RRC_RecBufferMa{n_RRC_R1_ChaNr,i}:=bmEmpty;
+            bm_RRC_RecBufferMa{n_RRC_R2_ChaNr,i}:=bmEmpty;
+            bm_RRC_RecBufferMa{n_RRC_R3_ChaNr,i}:=bmEmpty;
+            bm_RRC_RecBufferMa{n_RRC_R4_ChaNr,i}:=bmEmpty;
+            !
+        ENDFOR
+        !
+        ! Clear Buffer robots
+        FOR i FROM 1 TO DIM(bm_RRC_RecBufferRob,2) DO
+            !
+            ! Overwrite with an empty message
+            bm_RRC_RecBufferRob{n_RRC_R1_ChaNr,i}:=bmEmpty;
+            bm_RRC_RecBufferRob{n_RRC_R2_ChaNr,i}:=bmEmpty;
+            bm_RRC_RecBufferRob{n_RRC_R3_ChaNr,i}:=bmEmpty;
+            bm_RRC_RecBufferRob{n_RRC_R4_ChaNr,i}:=bmEmpty;
+            !
+        ENDFOR
+        !
+        ! Reset expected Sequince ID
+        n_RRC_SIDExpected{n_RRC_R1_ChaNr}:=0;
+        n_RRC_SIDExpected{n_RRC_R2_ChaNr}:=0;
+        n_RRC_SIDExpected{n_RRC_R3_ChaNr}:=0;
+        n_RRC_SIDExpected{n_RRC_R4_ChaNr}:=0;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     ProgError
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_ProgError()
+        ! 
+        ! User Info
+        TPWrite "Program Error";
+        !
+        ! Stop Program
+        Stop;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+ENDMODULE

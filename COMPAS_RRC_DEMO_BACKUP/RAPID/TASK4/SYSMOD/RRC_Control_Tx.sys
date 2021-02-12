@@ -1,0 +1,255 @@
+MODULE RRC_Control_Tx(SYSMODULE)
+    !***********************************************************************************
+    !
+    ! ETH Zurich / Robotic Fabrication Lab
+    ! HIB C 13 / Stefano-Franscini-Platz 1
+    ! CH-8093 Zurich
+    !
+    !***********************************************************************************
+    !
+    ! PROJECT     :  RRC - Rapid Robot Communication
+    !
+    ! FUNCTION    :  Control modul for the project 
+    !
+    ! AUTHOR      :  Philippe Fleischmann
+    !
+    ! EMAIL       :  rrc@arch.ethz.ch
+    !
+    ! HISTORY     :  2019.02.22
+    !
+    ! Copyright   :  ETH Zurich (CH) 2019
+    !                - Philippe Fleischmann
+    !                - Michael Lyrenmann
+    !                - Gonzalo Casas
+    !
+    ! License     :  This code base is governed by an EULA (End-User License Agreement)
+    !                which you have received together with the software.
+    !                You are not allowed to use the software on a real robots
+    !                without a signed EULA.
+    !
+    !                A copy of the EULA content is in the controller task (T_CTRL).
+    !
+    !***********************************************************************************
+
+    !************************************************
+    ! Function    :     main
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC main()
+        !****************************!
+        !                            !
+        !   #####   #####    ####    !
+        !   #    #  #    #  #    #   !
+        !   #    #  #    #  #        !
+        !   #####   #####   #        !
+        !   #   #   #   #   #    #   !
+        !   #    #  #    #   ####    !
+        !                            !
+        !****************************!
+        !
+        r_RRC_Main;
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Main for Project RRC
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_Main()
+        !
+        ! wait until master has set taskliste all
+        WaitTime n_RRC_TimeTaskLiAll;
+        !
+        ! Task synchronisation 
+        WaitSyncTask id_RRC_MainSta,tl_RRC_All;
+        !
+        ! Message for Operator
+        TPWrite "RRC Main";
+        !
+        ! Inititalize cell 
+        r_RRC_InitCell;
+        !
+        ! Work process
+        WHILE b_RRC_Run=TRUE DO
+            !
+            ! Check and send data to client
+            IF b_RRC_Com{n_RRC_R1_ChaNr}=TRUE THEN
+                !
+                ! For robot
+                IF bm_RRC_SenBufferRob{n_RRC_R1_ChaNr,n_RRC_ReadPtrSenBufRob{n_RRC_R1_ChaNr}}.startbit=TRUE r_RRC_PackSendDataToClient\Rob,n_RRC_R1_ChaNr;
+                !
+                ! For master
+                IF bm_RRC_SenBufferMa{n_RRC_R1_ChaNr,n_RRC_ReadPtrSenBufMa{n_RRC_R1_ChaNr}}.startbit=TRUE r_RRC_PackSendDataToClient\Ma,n_RRC_R1_ChaNr;
+            ENDIF
+            !
+            ! Check and send data to client
+            IF b_RRC_Com{n_RRC_R2_ChaNr}=TRUE THEN
+                !
+                ! For robot
+                IF bm_RRC_SenBufferRob{n_RRC_R2_ChaNr,n_RRC_ReadPtrSenBufRob{n_RRC_R2_ChaNr}}.startbit=TRUE r_RRC_PackSendDataToClient\Rob,n_RRC_R2_ChaNr;
+                !
+                ! For master
+                IF bm_RRC_SenBufferMa{n_RRC_R2_ChaNr,n_RRC_ReadPtrSenBufMa{n_RRC_R2_ChaNr}}.startbit=TRUE r_RRC_PackSendDataToClient\Ma,n_RRC_R2_ChaNr;
+            ENDIF
+            !
+            ! Check and send data to client
+            IF b_RRC_Com{n_RRC_R3_ChaNr}=TRUE THEN
+                !
+                ! For robot
+                IF bm_RRC_SenBufferRob{n_RRC_R3_ChaNr,n_RRC_ReadPtrSenBufRob{n_RRC_R3_ChaNr}}.startbit=TRUE r_RRC_PackSendDataToClient\Rob,n_RRC_R3_ChaNr;
+                !
+                ! For master
+                IF bm_RRC_SenBufferMa{n_RRC_R3_ChaNr,n_RRC_ReadPtrSenBufMa{n_RRC_R3_ChaNr}}.startbit=TRUE r_RRC_PackSendDataToClient\Ma,n_RRC_R3_ChaNr;
+            ENDIF
+            !
+            ! Check and send data to client
+            IF b_RRC_Com{n_RRC_R4_ChaNr}=TRUE THEN
+                !
+                ! For robot
+                IF bm_RRC_SenBufferRob{n_RRC_R4_ChaNr,n_RRC_ReadPtrSenBufRob{n_RRC_R4_ChaNr}}.startbit=TRUE r_RRC_PackSendDataToClient\Rob,n_RRC_R4_ChaNr;
+                !
+                ! For master
+                IF bm_RRC_SenBufferMa{n_RRC_R4_ChaNr,n_RRC_ReadPtrSenBufMa{n_RRC_R4_ChaNr}}.startbit=TRUE r_RRC_PackSendDataToClient\Ma,n_RRC_R4_ChaNr;
+            ENDIF
+        ENDWHILE
+        !
+        ! Message for Operator
+        TPWrite "RRC End";
+        !
+        ! Task synchronisation 
+        WaitSyncTask id_RRC_MainEnd,tl_RRC_All;
+        !
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Initialize Cell
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_InitCell()
+        !
+        ! Task synchronisation 
+        WaitSyncTask id_RRC_InitSta,tl_RRC_All;
+        !
+        ! Task synchronisation wait for master data 
+        WaitSyncTask id_RRC_InitMa,tl_RRC_All;
+        !
+        ! Initialize variables
+        r_RRC_InitVar;
+        !
+        ! Initialize sockets
+        IF b_RRC_SocketActiv=TRUE r_RRC_InitSockets;
+        !
+        ! Task synchronisation 
+        WaitSyncTask id_RRC_InitEnd,tl_RRC_All;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     Initialize Variables
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_InitVar()
+        !
+        ! Set Task on
+        b_RRC_TaskSenderOn:=TRUE;
+        !
+        ! Reset and start timestamp
+        ClkReset clk_RRC_TimeStamp;
+        ClkStart clk_RRC_TimeStamp;
+        !
+        ! Reset Counters
+        n_RRC_WritePtrSenBufMa{n_RRC_R1_ChaNr}:=0;
+        n_RRC_WritePtrSenBufMa{n_RRC_R2_ChaNr}:=0;
+        n_RRC_WritePtrSenBufMa{n_RRC_R3_ChaNr}:=0;
+        n_RRC_WritePtrSenBufMa{n_RRC_R4_ChaNr}:=0;
+        !
+        n_RRC_WritePtrSenBufRob{n_RRC_R1_ChaNr}:=0;
+        n_RRC_WritePtrSenBufRob{n_RRC_R2_ChaNr}:=0;
+        n_RRC_WritePtrSenBufRob{n_RRC_R3_ChaNr}:=0;
+        n_RRC_WritePtrSenBufRob{n_RRC_R4_ChaNr}:=0;
+        !
+        n_RRC_ReadPtrSenBufMa{n_RRC_R1_ChaNr}:=1;
+        n_RRC_ReadPtrSenBufMa{n_RRC_R2_ChaNr}:=1;
+        n_RRC_ReadPtrSenBufMa{n_RRC_R3_ChaNr}:=1;
+        n_RRC_ReadPtrSenBufMa{n_RRC_R4_ChaNr}:=1;
+        !
+        n_RRC_ReadPtrSenBufRob{n_RRC_R1_ChaNr}:=1;
+        n_RRC_ReadPtrSenBufRob{n_RRC_R2_ChaNr}:=1;
+        n_RRC_ReadPtrSenBufRob{n_RRC_R3_ChaNr}:=1;
+        n_RRC_ReadPtrSenBufRob{n_RRC_R4_ChaNr}:=1;
+        !        
+        n_RRC_SenHeaderSqzNr{n_RRC_R1_ChaNr}:=0;
+        n_RRC_SenHeaderSqzNr{n_RRC_R2_ChaNr}:=0;
+        n_RRC_SenHeaderSqzNr{n_RRC_R3_ChaNr}:=0;
+        n_RRC_SenHeaderSqzNr{n_RRC_R4_ChaNr}:=0;
+        !
+        ! Clear Buffers
+        FOR i FROM 1 TO DIM(bm_RRC_SenBufferMa,2) DO
+            !
+            ! Overwrite with an empty message
+            bm_RRC_SenBufferMa{n_RRC_R1_ChaNr,i}:=bmEmpty;
+            bm_RRC_SenBufferMa{n_RRC_R2_ChaNr,i}:=bmEmpty;
+            bm_RRC_SenBufferMa{n_RRC_R3_ChaNr,i}:=bmEmpty;
+            bm_RRC_SenBufferma{n_RRC_R4_ChaNr,i}:=bmEmpty;
+        ENDFOR
+        !
+        ! Clear Buffers
+        FOR i FROM 1 TO DIM(bm_RRC_SenBufferRob,2) DO
+            !
+            ! Overwrite with an empty message
+            bm_RRC_SenBufferRob{n_RRC_R1_ChaNr,i}:=bmEmpty;
+            bm_RRC_SenBufferRob{n_RRC_R2_ChaNr,i}:=bmEmpty;
+            bm_RRC_SenBufferRob{n_RRC_R3_ChaNr,i}:=bmEmpty;
+            bm_RRC_SenBufferRob{n_RRC_R4_ChaNr,i}:=bmEmpty;
+        ENDFOR
+        !
+        ! Clear Buffers
+        FOR i FROM 1 TO DIM(pro_RRC_ActMsgSen,2) DO
+            !
+            ! Overwrite with an empty protocol
+            pro_RRC_ActMsgSen{1,i}:=proEmpty;
+            pro_RRC_ActMsgSen{1,i}:=proEmpty;
+            pro_RRC_ActMsgSen{1,i}:=proEmpty;
+            pro_RRC_ActMsgSen{1,i}:=proEmpty;
+            !
+            pro_RRC_ActMsgSen{2,i}:=proEmpty;
+            pro_RRC_ActMsgSen{2,i}:=proEmpty;
+            pro_RRC_ActMsgSen{2,i}:=proEmpty;
+            pro_RRC_ActMsgSen{2,i}:=proEmpty;
+        ENDFOR
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+    !************************************************
+    ! Function    :     ProgError
+    ! Programmer  :     Philippe Fleischmann
+    ! Date        :     2019.02.22
+    !***************** ETH Zurich *******************
+    !
+    PROC r_RRC_ProgError()
+        ! 
+        ! User Info
+        TPWrite "Program Error";
+        !
+        ! Stop Program
+        Stop;
+        RETURN ;
+    ERROR
+        ! Placeholder for Error Code...
+    ENDPROC
+
+ENDMODULE
