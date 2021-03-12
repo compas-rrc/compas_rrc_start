@@ -21,7 +21,8 @@
 
 ### Visual Studio
 
-* [Visual Studio Code](https://code.visualstudio.com/): We recommend VS Code as the Python editor because it offers an easy-to-use interface. With this tool you can develop your process code. The following extensions are necessary:
+* [Visual Studio Code](https://code.visualstudio.com/): We recommend VS Code as the Python editor because it offers an easy-to-use interface. With this tool you can develop your process code. 
+* The following extensions are necessary:
   * [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python): Official extension to add support for Python programming, including debugging, auto-complete, formatting, etc.
   * [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker): Add support for Docker containers to VS Code.
   * [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig): Add support for .editorconfig files to VS Code.
