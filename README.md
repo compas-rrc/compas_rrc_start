@@ -34,7 +34,7 @@
 ### RobotStudio
 
 * [ABB RobotStudio](https://new.abb.com/products/robotics/robotstudio): We use this tool to simulate the robot cells. Available for free on a 30-days trial version. Universities usually obtain free license packages, commercial users require paid subscriptions for robot simulation.
-* After installation, make sure you install the following packages:
+* After installation, start RobotStudio and navigate to the `Add-in` tab and make sure you add the following packages:
   * Latest RobotWare version for IRC5
   * Latest RobotWare version for OmniCore
 
@@ -47,7 +47,7 @@
 ### Start the robot
 
 * Unpack a `Pack&Go (.rspag)` file with a double-click. Files are in the `robotstudio-stations` folder.
-* Navigate to the `Controller`tab and open `FlexPendant`
+* Navigate to the `Controller` tab and open `FlexPendant`
 * Navigate to the `Simulation` tab and start the simulation (use the `Play` button in RobotStudio, not the one on the `FlexPendant`)
 
 ### Start ROS driver
