@@ -32,7 +32,8 @@
 
 ### RobotStudio
 
-* [ABB RobotStudio](https://new.abb.com/products/robotics/robotstudio): Available for free on a 30-days trial version. Universities usually obtain free license packages, commercial users require paid subscriptions for robot simulation. After installation, make sure you install the following packages:
+* [ABB RobotStudio](https://new.abb.com/products/robotics/robotstudio): We use this tool to simulate the robot cells. Available for free on a 30-days trial version. Universities usually obtain free license packages, commercial users require paid subscriptions for robot simulation.
+* After installation, make sure you install the following packages:
   * Latest RobotWare version for IRC5
   * Latest RobotWare version for OmniCore
 
