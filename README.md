@@ -1,16 +1,19 @@
-# Getting started with COMPAS RRC
+# Welcome to COMPAS RRC
 
- > COMPAS RRC is a robot driver for ABB robots based on COMPAS/COMPAS_FAB
+ > Online control for ABB robots over a simple-to-use Python interface.
 
 ## Requirements
 
-Basics
-
 * Minimum OS: Windows 10 Pro
+
+## Installation
+
+### Basics
+
 * [Anaconda 3](https://www.anaconda.com/products/individual#Downloads): Anaconda is an open source scientific Python distribution. With this tool, we can easily create a Python environment. Install Anaconda using default options.
 * [Docker Desktop](https://www.docker.com/products/docker-desktop): Docker is a virtualization platform. We use it to run Linux containers for ROS on Windows machines. After installation on Windows, it is required to enable "Virtualization" on the BIOS of the computer. Usually this requires rebooting your computer and pressing a vendor-specific key (`F2`, `F4`, `Del` are typical options) to enter the BIOS.
 
-Tools
+### Tools
 
 * [Visual Studio Code](https://code.visualstudio.com/): We recommend VS Code as the Python editor because it offers an easy-to-use interface. The following extensions are recommended:
   * [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python): Official extension to add support for Python programming, including debugging, auto-complete, formatting, etc.
