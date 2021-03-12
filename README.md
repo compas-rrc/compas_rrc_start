@@ -4,7 +4,11 @@
 
 ## Requirements
 
-* Minimum OS: Windows 10 Pro
+* Windows 10 Pro 64-bit
+* CPU 2 GHz
+* Memory 8 GB
+* Disk 10 GB SSD
+* Screen 1920x1080
 
 ## Installation
 
