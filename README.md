@@ -38,7 +38,7 @@
   * Latest RobotWare version for IRC5
   * Latest RobotWare version for OmniCore
 
-## Quickstart
+## Start
 
 ### Get started
 
@@ -62,3 +62,8 @@
 * Make sure your conda environment has `compas_rrc` installed.
 * Navigate to the `python` folder
 * Run `compas_rrc_A_welcome.py`
+
+# Thank you for your interest in COMPAS_RRC
+
+> If you need further help, please contact us `rrc@arch.ethz.ch`.
+ 
