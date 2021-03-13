@@ -65,5 +65,5 @@
 
 # Thank you for your interest in COMPAS_RRC
 
-> If you need further help, please contact us `[rrc@arch.ethz.ch](mailto:rrc@arch.ethz.ch)`.
+> If you need further help, please contact us [`rrc@arch.ethz.ch`](mailto:rrc@arch.ethz.ch).
  
