@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # Print received values
     print(frame)
 
-    # Change a joint value [°]
+    # Change the x-value [mm]
     frame.point[0] -= 50
 
     # Set speed [mm/s]
