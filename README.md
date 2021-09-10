@@ -59,7 +59,7 @@
 
 ### Start examples
 
-* Make sure your conda environment has `compas_rrc` installed.
+* Make sure your [conda environment has `compas_rrc` installed](https://github.com/compas-rrc/compas_rrc#installation).
 * Navigate to the `python` folder
 * Run `compas_rrc_A_welcome.py`
 
