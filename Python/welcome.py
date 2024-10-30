@@ -10,7 +10,7 @@ if __name__ == '__main__':
     abb = rrc.AbbClient(ros, '/rob1')
     print('Connected.')
 
-    # Print text on FlexPenant
+    # Print text on FlexPendant
     done = abb.send_and_wait(rrc.PrintText('Welcome to COMPAS_RRC'))
 
     # Print feedback 
