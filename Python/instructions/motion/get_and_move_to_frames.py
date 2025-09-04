@@ -22,7 +22,8 @@ if __name__ == '__main__':
     # Print received values
     print(frame)
 
-    # Change the x-value [mm]
+    # Change a value of the frame - here we change the x-value [mm] 
+    # [ ] ToDo: explain realation tool and work object
     frame.point[0] -= 50
 
     # Set speed [mm/s]
