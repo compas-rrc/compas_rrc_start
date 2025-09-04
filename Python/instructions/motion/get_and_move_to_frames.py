@@ -10,10 +10,10 @@ if __name__ == '__main__':
     abb = rrc.AbbClient(ros, '/rob1')
     print('Connected.')
 
-    # Set tool
+    # Set tool - here we use the default tool of the robot
     abb.send(rrc.SetTool('tool0'))
 
-    # Set work object
+    # Set work object - here we use the default work object of the robot
     abb.send(rrc.SetWorkObject('wobj0'))
 
     # Read current frame position
