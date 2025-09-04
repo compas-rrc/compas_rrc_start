@@ -41,7 +41,9 @@ services:
       - --wait
       - compas_rrc_driver
       - bringup.launch
-      - robot_ip:=192.168.125.1
+      - robot_ip:=host.docker.internal  # Virtual Controller  
+      - robot_ip:=192.168.125.1         # Real Robot Service or Managment Port
+      - robot_ip:=xxx.xxx.xxx.xxx       # Real Robot WAN Port
       - robot_streaming_port:=30101
       - robot_state_port:=30201
       - namespace:=rob1
