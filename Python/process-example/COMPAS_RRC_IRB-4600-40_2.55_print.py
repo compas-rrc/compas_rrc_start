@@ -149,9 +149,10 @@ if __name__ == '__main__':
         # Increase cycle counter
         cycle += 1
 
-        # 
+        # Update process parameters based on cycle
         match cycle:
 
+            # First cycle
             case 1:
 
                 # Red print (x)
@@ -160,7 +161,8 @@ if __name__ == '__main__':
                 print_end = PRINT_RED_END_X
                 print_speed = PRINT_RED_SPEED_X
                 print_signal = SIGNAL_RED_X
-        
+
+            # Second cycle  
             case 2:
 
                 # Green print (y)
@@ -170,6 +172,7 @@ if __name__ == '__main__':
                 print_speed = PRINT_GREEN_SPEED_Y
                 print_signal = SIGNAL_GREEN_Y
         
+            # Third cycle
             case 3:
 
                 # Blue print (z)
@@ -222,7 +225,7 @@ if __name__ == '__main__':
             printing = False
     
     # Print Text
-    done = abb.send_and_wait(rrc.PrintText('Compas_RRC Example finish.'))
+    done = abb.send_and_wait(rrc.PrintText('COMPAS_RRC Example finish.'))
 
     # End of Code
     print('Finished')
