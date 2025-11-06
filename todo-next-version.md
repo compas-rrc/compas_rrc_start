@@ -26,6 +26,24 @@
 - no tool and work object creation -> go to COMPAS_RRC_ABB
 
 
+### CustomInstruction 
+- update to:
+
+    - PYTHON:
+
+    done = abb.send_and_wait(rrc.CustomInstruction('r_RRC_CustomInstruction', ['Text1','Text2'], [1.0,2.0]))
+
+    - RAPID: 
+
+        ! Placehoder for your Code     
+        
+        r_RRC_FAddString("Tex1");
+        r_RRC_FAddString("Tex2");
+
+        r_RRC_FAddValue(1.0);
+        r_RRC_FAddValue(2.0);
+
+
 
 
 
