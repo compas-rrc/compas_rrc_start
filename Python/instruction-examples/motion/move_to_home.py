@@ -14,7 +14,7 @@ if __name__ == '__main__':
     robot_joints, external_axes =[0, 0, 0, 0, 30, 0],  []
 
     # Move robot to start position
-    done = abb.send_and_wait(rrc.MoveToJoints(robot_joints, external_axes, 1000, rrc.Zone.FINE))
+    done = abb.send_and_wait(rrc.MoveToJoints(robot_joints, external_axes, 100, rrc.Zone.FINE))
 
     # Print feedback 
     print('Feedback = ', done)
