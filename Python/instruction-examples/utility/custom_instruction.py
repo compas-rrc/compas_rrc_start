@@ -10,30 +10,41 @@ if __name__ == '__main__':
     abb = rrc.AbbClient(ros, '/rob1')
     print('Connected.')
 
-    # ========================================================================================================================
-    # Call of CustomInstruction
-    # ========================================================================================================================
+    # =========================================================================================================
+    # EXAMPLE: CustomInstruction
+    # =========================================================================================================
     #
-    # 'r_RRC_CustomInstruction': Name of the RAPID procedure to be called.
-    #                            'r_' is the recommended prefix for routines, and '_RRC_' 
-    #                            is the reserved key for official RRC commands/functions in RAPID.
-    #                            For your own custom instructions, use your own key such as '_ABC_' 
-    #                            (3–4 characters recommended).
+    # The CustomInstruction allows you to call a RAPID procedure with custom arguments.
     #
-    # ['Text1','Text2']:         Example showing how to pass up to 8 strings (each up to 80 characters) from Python to RAPID.
+    # 'r_RRC_CustomInstruction':
+    #     - Name of the RAPID procedure to be executed on the robot controller.
+    #     - By convention, use 'r_' as prefix for routines.
+    #     - '_RRC_' is reserved for official RRC functions; for your own routines, use a unique key, e.g. '_ABC_' (3–4 characters recommended).
     #
-    # [1.1,2.2]:                 Example showing how to pass up to 36 numeric values from Python to RAPID.
+    # ['Python value 1: ','Python value 2: ']:
+    #     - Example string arguments passed from Python to RAPID.
+    #     - Up to 8 strings can be sent, each with max. 80 characters.
     #
-    # ========================================================================================================================
+    # [1.11,2.22]:
+    #     - Example float arguments passed from Python to RAPID.
+    #     - Up to 36 numeric values can be provided.
+    #
+    # The RAPID routine processes the input and sends custom output data
+    # (up to 8 strings and 36 floats) back to Python as feedback.
+    # =========================================================================================================
 
-    raw_debug_output = abb.send_and_wait(rrc.Debug(rrc.CustomInstruction('r_RRC_CustomInstruction', ['Python value 1: ','Python value 2: '], [1.11,2.22])))
+    # Syntax:
+    custominstruction_feedback = abb.send_and_wait(rrc.Debug(rrc.CustomInstruction('r_RRC_CustomInstruction', ['Python value 1: ','Python value 2: '], [1.11,2.22])))
 
-    rapid_string_1 = raw_debug_output['string_values'][0]
-    rapid_string_2 = raw_debug_output['string_values'][1]
+    # Read custom insturction string feedback 
+    rapid_string_1 = custominstruction_feedback['string_values'][0]
+    rapid_string_2 = custominstruction_feedback['string_values'][1]
 
-    rapid_value_1 = round(raw_debug_output['float_values'][0],2)
-    rapid_value_2 = round(raw_debug_output['float_values'][1],2)
+    # Read custom insturction float feedback rounded to 2 decimals
+    rapid_value_1 = round(custominstruction_feedback['float_values'][0],2)
+    rapid_value_2 = round(custominstruction_feedback['float_values'][1],2)
 
+    # Print feedback from RAPID:
     print(rapid_string_1, rapid_value_1)
     print(rapid_string_2, rapid_value_2)
 
