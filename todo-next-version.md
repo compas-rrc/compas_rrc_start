@@ -43,14 +43,43 @@
         r_RRC_FAddValue(1.0);
         r_RRC_FAddValue(2.0);
 
+---
 
+### Recommended Startup Procedure
 
+Follow the steps below in the given order to ensure a smooth startup of the robot system:
 
+#### 1. Preparation
 
+- Stop the robot application.  
+- Bring down Docker containers (`docker-compose down`).  
+- Close all open terminal sessions.
 
+#### 2. Start the Robot
 
+- Do **PP-Main** and starte application on the **FlexPendant**.  
+- On the FlexPendant display, verify the following status for each task:
 
+  - `T_ROB1 → RRC Main`  
+  - `T_CTRL → RRC Main`  
+  - `T_RX → RRC Main`  
+  - `T_TX → RRC Main`  
 
+#### 3. Start Docker Containers
+
+- Bring up the Docker environment (`docker-compose up`).  
+- On the FlexPendant display, verify the following status for the controller task:
+  - `T_CTRL → RRC Connected`
+
+#### 4. Launch Python Code
+
+- Run your Python script (e.g., `welcome.py`) from VS Code.
+- Verify that the code executes and that the robot starts performing actions — in this case, a print output of `Welcome to COMPAS_RRC`.
+
+#### NOTE: 
+- As long as your code is error-free, you can launch scripts sequentially.  
+- If errors occur or the system becomes unsynchronized, killing the terminal and **PP-Main** on the FlexPendant usually resolves the issue.  
+- In some cases, it may be necessary to restart the procedure from **Step 1**.
 
 
 
